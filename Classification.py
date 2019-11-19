@@ -8,6 +8,8 @@ class Classification :
         self.weight=Weighting()
         self.prior=[]
         self.kelas_final=[]
+        self.training_data=[]
+        self.training_kelas=[]
     def train(self, document, kelas):
         self.kelas = kelas
         self.weight.setDocument([Preprocessing.all_in_one_without_type(documents) for documents in document for
@@ -38,7 +40,16 @@ class Classification :
                 temp.append(((x+1)/(panjang[y]+v)))
             self.prior.append(temp)
 
+
     def testing(self,document,type):
+        self.training_kelas = type
+        self.training_data=document
+        test= [[1,2,3],[4,5,6]]
+        print([self.do_testing(item) for data in self.training_data for item in data])
+
+
+
+    def do_testing(self,document):
         process = Preprocessing.all_in_one_without_type(document)
         new_type = [ type for type in process for feature in self.weight.getFeature() if type in feature]
         p = {x:self.kelas.count(x) for x in self.kelas}
@@ -54,5 +65,5 @@ class Classification :
             for x in index:
                 temp = self.prior[p][x]
             posterior.append(temp*final_p[p])
-
-        print(self.kelas_final[posterior.index(max(posterior))])
+        print(posterior)
+        return self.kelas_final[posterior.index(max(posterior))]

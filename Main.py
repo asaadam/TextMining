@@ -10,8 +10,8 @@ class Main:
         kelas =['A', 'A', 'B', 'B', 'C']
         klasifikasi= Classification()
         klasifikasi.train(document, kelas)
-        new_docs='nasi goreng pedas'
-        klasifikasi.testing(new_docs,'A')
+        new_docs=['nasi goreng pedas'],['bus besar berpenumpang sawah']
+        klasifikasi.testing(new_docs,['A','B'])
 
 
 
