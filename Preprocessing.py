@@ -54,6 +54,8 @@ class Preprocessing:
 
     @staticmethod
     def all_in_one_without_type(text):
+        print('preprocessing')
+        print(text)
         return Preprocessing.filtering(
                 Preprocessing.stemming(
                     Preprocessing.tokenisasi(

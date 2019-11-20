@@ -10,10 +10,10 @@ class Classification :
         self.kelas_final=[]
         self.training_data=[]
         self.training_kelas=[]
-    def train(self, document, kelas):
+
+    def train(self, documents, kelas):
         self.kelas = kelas
-        self.weight.setDocument([Preprocessing.all_in_one_without_type(documents) for documents in document for
-                                 documents in documents])
+        self.weight.setDocument([Preprocessing.all_in_one_without_type(document) for document in documents])
         transpose = list(map(list, zip(*self.weight.getTf())))
         hasil = {}
         for x in range(len(self.kelas)):
@@ -41,14 +41,15 @@ class Classification :
             self.prior.append(temp)
 
 
-    def testing(self,document,type):
-        self.training_kelas = type
+    def testing(self,document):
         self.training_data=document
-        print([self.do_testing(data) for data in self.training_data])
+        return np.asarray([self.do_testing(data) for data in self.training_data])
 
 
 
     def do_testing(self,document):
+        print('testing document')
+        print(document)
         process = Preprocessing.all_in_one_without_type(document)
         new_type = [ type for type in process for feature in self.weight.getFeature() if type in feature]
         p = {x:self.kelas.count(x) for x in self.kelas}
@@ -57,7 +58,8 @@ class Classification :
         final_p=[(p/total)for p in item]
         index =[]
         for data in new_type:
-            index.append(self.weight.getFeature().index(data))
+            if data in self.weight.getFeature():
+                index.append(self.weight.getFeature().index(data))
         posterior=[]
         for p in range (len(final_p)):
             temp = 0
@@ -65,3 +67,11 @@ class Classification :
                 temp = self.prior[p][x]
             posterior.append(temp*final_p[p])
         return self.kelas_final[posterior.index(max(posterior))]
+
+    def hitung_akurasi(self,hasil,real):
+        count=0
+        for hasil in hasil:
+            if hasil in real:
+                count +=1
+        print(count/len(real)*100)
+
