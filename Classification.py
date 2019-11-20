@@ -44,8 +44,7 @@ class Classification :
     def testing(self,document,type):
         self.training_kelas = type
         self.training_data=document
-        test= [[1,2,3],[4,5,6]]
-        print([self.do_testing(item) for data in self.training_data for item in data])
+        print([self.do_testing(data) for data in self.training_data])
 
 
 
@@ -65,5 +64,4 @@ class Classification :
             for x in index:
                 temp = self.prior[p][x]
             posterior.append(temp*final_p[p])
-        print(posterior)
         return self.kelas_final[posterior.index(max(posterior))]
